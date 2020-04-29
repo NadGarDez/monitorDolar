@@ -12,13 +12,42 @@ function scraping (){
 
 	this.scrap= function(){
 
+
+
+		ajax = new this.httpComunication();
+
+		ajax.petition(
+			'url.com',
+			false,
+			'json',
+			function(data){
+				console.log('all it is fine');
+				//there we will call the function 
+				this.saveData(data);
+
+			},
+			function(error){
+				console.log('there is an error');
+			}
+
+
+		);
+
 		setTimeout(
+
+
+
 
 			function(){
 				this.scrap();
 			}
 		),
 		10000
+
+	}
+
+
+	this.saveData=function(data){
 
 	}
 
@@ -62,6 +91,7 @@ function render () {
 				stringSearch = ajax.makeQueryString(stringSearch, {option:1});
 				ajax.petition(
 					'url.com',
+					true,
 					'myheader',
 					stringSearch,
 					'json',
@@ -85,6 +115,7 @@ function render () {
 				stringSearch = ajax.makeQueryString(stringSearch, {option:2});
 				ajax.petition(
 					'url.com',
+					true,
 					'myheader',
 					stringSearch,
 					'json',
@@ -109,6 +140,7 @@ function render () {
 				stringSearch = ajax.makeQueryString(stringSearch, {option:3});
 				ajax.petition(
 					'url.com',
+					true,
 					'myheader',
 					stringSearch,
 					'json',
@@ -144,49 +176,94 @@ function render () {
 
 function httpComunication (){
 
-	this.patition= function(url,headers,data,formateResponse,callbak,callbakError){
-		var object={
-			'method':method
-			'body':data
-		}
+	this.patition= function(url,option,headers="",data="",formateResponse,callbak,callbakError){
+		
 
 
+		if(option==true){
 
-		fetch(
-			url,
-			object
-		)
-		.then(
-			function(data){
-				switch (formateResponse){
-					case 'text':
+			var object={
+				'method':method
+				'body':data
+			}
 
-						return data.text();
+			fetch(
+				url,
+				object
+			)
+			.then(
+				function(data){
+					switch (formateResponse){
+						case 'text':
+
+							return data.text();
 
 
-					break;
-					case 'json':
+						break;
+						case 'json':
 
-						return data.json();
+							return data.json();
 
 
-					break;
+						break;
+
+					}
+				}
+			)
+			.then(
+				function(data){
+					callback(data);
+				}
+			)
+			.catch(
+				function(error){
+					callbakError(error);
 
 				}
-			}
-		)
-		.then(
-			function(data){
-				callback(data);
-			}
-		)
-		.catch(
-			function(error){
-				callbakError(error);
 
-			}
+			);
+		}
+		else{
 
-		);
+
+			fetch(
+				url
+			)
+			.then(
+				function(data){
+					switch (formateResponse){
+						case 'text':
+
+							return data.text();
+
+
+						break;
+						case 'json':
+
+							return data.json();
+
+
+						break;
+
+					}
+				}
+			)
+			.then(
+				function(data){
+					callback(data);
+				}
+			)
+			.catch(
+				function(error){
+					callbakError(error);
+
+				}
+
+			);
+
+
+
+		}
 
 	}
 
@@ -201,3 +278,6 @@ function httpComunication (){
 	}
 
 }
+
+
+var scraper = new scraping(); 
