@@ -54,15 +54,88 @@ function render () {
 
 	this.search= function(level,start){//Search the data storage in the database...level refer to the scale of time ... exaple daily, week, month . and start is the time begin the result. that parameter must be a datatime parameter
 
+		ajax = new this.httpComunication();
+
 		switch(level){
 			case  1: //search the dolar prize average for each hour in a determinate day
+				var stringSearch="option={option}";
+				stringSearch = ajax.makeQueryString(stringSearch, {option:1});
+				ajax.petition(
+					'url.com',
+					'myheader',
+					stringSearch,
+					'json',
+					function(data){
+						console.log('all it is fine');
+						this.render(data);
+						//there we will call the function 
+
+					},
+					function(){
+						console.log('there is an error');
+					}
+
+
+				);
+
 			break;
 			case 2 : //search the dolar prize average for each day in a  determinate week
+			
+				var stringSearch="option={option}";
+				stringSearch = ajax.makeQueryString(stringSearch, {option:2});
+				ajax.petition(
+					'url.com',
+					'myheader',
+					stringSearch,
+					'json',
+					function(){
+						console.log('all it is fine');
+						//there we will call the function 
+
+					},
+					function(){
+						console.log('there is an error');
+					}
+
+
+				);
+
+
+
 			break;
 			case 3:  //seach the dolar prize average for each month in a determinate year
+			
+				var stringSearch="option={option}";
+				stringSearch = ajax.makeQueryString(stringSearch, {option:3});
+				ajax.petition(
+					'url.com',
+					'myheader',
+					stringSearch,
+					'json',
+					function(){
+						console.log('all it is fine');
+						//there we will call the function 
+
+					},
+					function(){
+						console.log('there is an error');
+					}
+
+
+				);
+
+
+
 			break;
 
 		}
+
+	}
+
+
+	this.render= function(data){
+
+		//this is the render function.. we will use canvas to print in the frontend
 
 	}
 
@@ -122,6 +195,8 @@ function httpComunication (){
 		for(let key in keys){
 			string = string.replace('{'+key+'}',keys[]);
 		}
+
+		return string;
 
 	}
 
